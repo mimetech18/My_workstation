@@ -1,0 +1,52 @@
+Core and Distribution Router (Single Router)
+=============================================
+/system logging action add bsd-syslog=yes name=logserver remote=103.172.29.74 syslog-facility=syslog target=remote
+/system logging action add name=logserver remote=103.172.29.74  remote-log-format=syslog syslog-facility=local5 target=remote
+/system logging set 0 topics=info,!firewall
+/system logging add action=logserver topics=firewall
+
+/ip firewall mangle add action=log chain=prerouting connection-state=established protocol=tcp src-address=10.0.0.0/8 tcp-flags=fin
+
+/ip service set api port=1122
+
+
+
+foreach dev in=[ppp active print detail as-value where name="$user" ] do={
+     /log info ("PPPLOG $user " . ($dev->"caller-id") . " " . ($dev->"address"));
+};:
+
+
+
+Core and Distribution Router (Separate Router)
+=============================================
+
+Core router (if there is no users)
+==================================
+/system logging action add bsd-syslog=yes name=logserver remote=103.117.194.190 syslog-facility=syslog target=remote
+/system logging action add name=logserver remote=103.117.194.190 remote-log-format=syslog syslog-facility=local5 target=remote
+/system logging set 0 topics=info,!firewall
+/system logging add action=logserver topics=firewall
+
+/ip firewall mangle add action=log chain=prerouting connection-state=established protocol=tcp src-address=10.0.0.0/8 tcp-flags=fin
+
+/ip service set api port=1122
+
+
+Distribution Router
+===================
+
+/system logging action add bsd-syslog=yes name=logserver remote=103.117.194.190 syslog-facility=syslog target=remote
+/system logging action add name=logserver remote=103.117.194.190 remote-log-format=syslog syslog-facility=local5 target=remote
+/system logging set 0 topics=info,!firewall
+/system logging add action=logserver topics=script
+
+
+/ip firewall mangle add action=log chain=prerouting connection-state=established protocol=tcp src-address=10.0.0.0/8 tcp-flags=fin
+
+/ip service set api port=1122
+
+
+
+foreach dev in=[ppp active print detail as-value where name="$user" ] do={
+     /log info ("PPPLOG $user " . ($dev->"caller-id") . " " . ($dev->"address"));
+};:
