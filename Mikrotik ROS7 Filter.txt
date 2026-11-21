@@ -1,0 +1,28 @@
+Mikrotik ROS7 Filter
+if (dst in 103.55.145.80/29 && dst-len in 0-29) { accept; }
+
+if (dst in 2400:4fc0:b::/48 && dst-len in 48-49) { accept; }
+
+if (dst in 0.0.0.0/0 && dst-len in 0-32) { reject; }
+
+if (dst in ::/0 && dst-len in 0-128) { reject; }
+
+if (dst in 103.55.145.48/28 && dst-len in 0-28) { accept; }
+
+if (dst in 0.0.0.0/0 && dst-len in 0-32) { reject; }
+
+if (dst in 103.126.212.0/22 && dst-len in 22-32) { set bgp-path-prepend 3; accept; }
+
+if (dst in 0.0.0.0/0 && dst-len in 0-32) { set bgp-weight 4000; set bgp-local-pref 4000; accept; }
+
+if (dst in 0.0.0.0/0 && dst-len in 0-128) { reject; }
+
+if (dst == ::/0) { accept; }
+
+if (dst in ::/0 && dst-len in 0-128) { reject; }
+
+if (dst == 103.73.227.112/30) { set bgp-med 1000; accept; }
+
+if (dst in 103.126.212.0/22 && dst-len in 22-32) { set bgp-path-prepend 3; accept; }
+
+if (dst == 202.83.126.16/29) { set bgp-path-prepend 3; accept; }
